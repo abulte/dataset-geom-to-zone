@@ -121,3 +121,29 @@ uv run jupyter lab
 ```
 
 All downloads are skipped if the files already exist locally.
+
+---
+
+## Future integration into udata
+
+The bbox matching approach is designed to integrate directly into [udata](https://github.com/opendatateam/udata) as a real-time detection function triggered whenever a dataset's spatial geometry changes.
+
+**Plan:**
+
+1. `zones_bboxes.json` is shipped with udata (or fetched at startup) and loaded once into memory as a plain Python dict — no dependencies beyond the standard library.
+2. A detection function runs on each geometry change event:
+   ```python
+   def detect_zone(bbox, zones):
+       # bbox: [minx, miny, maxx, maxy]
+       # zones: {zone_id: [minx, miny, maxx, maxy]}  — loaded once at startup
+       scores = {zid: iou(bbox, zbox) for zid, zbox in zones.items()}
+       best = max(scores, key=scores.get)
+       return best if scores[best] >= 0.8 else None
+   ```
+3. The detected zone ID is written to a dataset metadata field (e.g. `spatial.zones`).
+
+**Why bbox matching for this use case:**
+- No dependencies (no geopandas, no shapely, no numpy) — safe to run inside udata
+- A single geometry against 39K zone bboxes is a microsecond-level pure Python scan
+- The 0.8 IoU threshold is conservative enough to avoid false positives in an automated write path
+- `zones_bboxes.json` is small enough (~3 MB) to keep in memory indefinitely

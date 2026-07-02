@@ -31,7 +31,25 @@ then for each dataset with a bounding box finds the best-matching zone using:
 - actual `shapely.intersection` IoU on remaining candidates
 - best match must satisfy IoU ≥ 0.4 and zone area ≤ bbox area
 
-**Output:** `geozones-mapping-output.csv`
+**Output:** `geozones-mapping-output.csv` — one row per matched dataset:
+
+| Column | Description |
+|---|---|
+| `id` | Dataset ID |
+| `title` | Dataset title |
+| `zone_id` | Matched zone ID (e.g. `fr:departement:38`, `fr:commune:75056`) |
+| `iou_score` | IoU score of the match (0.4–1.0) |
+
+Last run: **32,338 datasets matched** out of 45,424 with a bounding box.
+
+| Level | Count |
+|---|---|
+| `fr:departement` | 14,657 |
+| `fr:region` | 8,390 |
+| `fr:commune` | 7,358 |
+| `fr:epci` | 1,197 |
+| `country-subset:fr` | 680 |
+| `country:fr` | 56 |
 
 ### `geozones-debug.ipynb`
 

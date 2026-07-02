@@ -1,0 +1,16 @@
+# Downloaded archives and source data
+geozones.tar.xz
+zones.json
+export-geozones.json
+export-dataset.csv
+
+# Generated intermediate and output files
+zones_global.geojson
+zones_filtered.geojson
+geozones-mapping-output.csv
+
+# Jupyter
+.ipynb_checkpoints/
+
+# chat
+*.chat

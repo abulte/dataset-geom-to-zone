@@ -8,6 +8,8 @@ export-dataset.csv
 zones_global.geojson
 zones_filtered.geojson
 geozones-mapping-output.csv
+geozones-mapping-bboxes-output.csv
+zones_bboxes.json
 
 # Jupyter
 .ipynb_checkpoints/
